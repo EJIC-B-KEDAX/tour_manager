@@ -76,6 +76,11 @@ bool oj_sign_in() {
 		std::cout << "sign in failed\n";
 		return false;
 	}
+	std::string ans = read_from_file("temp.ans");
+	if (ans.find("302 Found") >= ans.size()) {
+		std::cout << "Email or password incorrect\n";
+		return false;
+	}
 	std::cout << "authorization successful\n";
 	return true;
 }

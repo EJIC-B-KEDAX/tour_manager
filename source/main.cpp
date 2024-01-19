@@ -5,7 +5,9 @@
 
 int main() {
 	std::cout << "sign in oj.uz\n";
-	oj_sign_in();
+	if (!oj_sign_in()) {
+		return 0;
+	}
 	Problem problem("JOI20_ho_t1", "oj", 1, 0);
 	while (true) {
 		std::string command;
