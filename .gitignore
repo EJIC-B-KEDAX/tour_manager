@@ -2,8 +2,7 @@
 /.idea/
 /cmake-build-debug/
 CMakeLists.txt
-
-/save/problems.lox
-/save/upsolving.lox
+/save/*.lox
+/save/*.pdf
 temp.ans
 temp.sh
