@@ -4,3 +4,4 @@
 CMakeLists.txt
 /statements/*.pdf
 /save/problems.lox
+/save/upsolving.lox
