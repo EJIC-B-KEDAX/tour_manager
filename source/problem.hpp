@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <fstream>
 #include "url_data.hpp"
 #include "useful_functions.hpp"
 
@@ -56,6 +57,14 @@ public:
 		}
 		_submissions.push_back(stoi(submission_id));
 		std::cout << "submission sent\n";
+	}
+	std::ofstream& operator << (std::ofstream& fout) {
+		fout << _name << " " << _type << " " << _complexity << " " << _index << "\n" << _submissions.size() << "\n";
+		for (int i : _submissions) {
+			fout << (i) << " ";
+		}
+		fout << std::to_string('\n');
+		return fout;
 	}
 private:
 	std::string _name, _type;

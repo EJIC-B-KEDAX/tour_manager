@@ -8,16 +8,12 @@ int main() {
 	if (!oj_sign_in()) {
 		return 0;
 	}
-	Problem problem("JOI20_ho_t1", "oj", 1, 0);
+	std::vector<Problem> problems, upsolving;
 	while (true) {
 		std::string command;
 		std::cin >> command;
 		if (command == "exit") {
 			break;
-		} else if (command == "submit") {
-			std::string filename;
-			std::cin >> filename;
-			problem.submit(read_from_file(filename));
 		}
 	}
 	write_in_file("temp.sh", "");
