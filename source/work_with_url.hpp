@@ -20,6 +20,8 @@ std::string oj_submit = "curl -i -s -k -X $'POST' -H $'Host: oj.uz' -H $'Content
 
 std::string oj_to_sibmission = "curl -i -s -k -X $'GET' -H $'Host: oj.uz' -H $'Referer: https://oj.uz/problem/submit/{NAME}' -b $'session={SESSION}' $'https://oj.uz/submission/{SUBMISSION}' > temp.ans";
 
+std::string oj_view_problem = "curl -i -s -k -X $'GET' https://oj.uz/problem/view/{NAME} > temp.ans";
+
 bool oj_update_data() {
 	std::string ans = read_from_file("temp.ans");
 	if (ans.find("302 Found") >= ans.size() && ans.find("200 OK") >= ans.size()) {
@@ -30,7 +32,7 @@ bool oj_update_data() {
 		int pos = (int)ans.find("session=") + 8;
 		oj_session.clear();
 		while (ans[pos] != ';') {
-			oj_session += ans[pos];
+            oj_session += ans[pos];
 			pos++;
 		}
 	}
@@ -83,6 +85,11 @@ bool oj_sign_in() {
 	}
 	std::cout << "authorization successful\n";
 	return true;
+}
+
+void download_file(std::string link, std::string filename) {
+    write_in_file("temp.sh", "curl " + link + " > " + filename);
+    std::system("temp.sh");
 }
 
 #endif
