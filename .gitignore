@@ -3,6 +3,7 @@
 /cmake-build-debug/
 CMakeLists.txt
 /save/*.lox
-/save/*.pdf
+*.pdf
+/*.cpp
 temp.ans
 temp.sh
