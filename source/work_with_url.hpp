@@ -18,7 +18,7 @@ std::string oj_to_problem = "curl -i -s -k -X $'GET' -H $'Host: oj.uz' -b $'sess
 
 std::string oj_submit = "curl -i -s -k -X $'POST' -H $'Host: oj.uz' -H $'Content-Length: {LENGTH}' -H $'Content-Type: application/x-www-form-urlencoded' -H $'Referer: https://oj.uz/problem/submit/{NAME}' -b $'session={SESSION}' --data-binary $'codes=&csrf_token={CSRF_TOKEN}&language=9&code_1={CODE}&codes=' $'https://oj.uz/problem/submit/{NAME}' > temp.ans";
 
-std::string oj_to_sibmission = "curl -i -s -k -X $'GET' -H $'Host: oj.uz' -H $'Referer: https://oj.uz/problem/submit/{NAME}' -b $'session={SESSION}' $'https://oj.uz/submission/{SUBMISSION}' > temp.ans";
+std::string oj_to_submission = "curl -i -s -k -X $'GET' $'https://oj.uz/submission/{SUBMISSION}' > temp.ans";
 
 std::string oj_view_problem = "curl -i -s -k -X $'GET' https://oj.uz/problem/view/{NAME} > temp.ans";
 

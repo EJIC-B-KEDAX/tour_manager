@@ -34,6 +34,7 @@ public:
         replace(request, "{NAME}", _name);
         write_in_file("temp.sh", request);
         run_file("temp.sh");
+        oj_update_data();
         ans = read_from_file("temp.ans");
         if (ans.find("Your browser does not support embedded PDF files. Please download the <a href='") >= ans.size()) {
             std::cout << "something went wrong\n";
@@ -92,6 +93,60 @@ public:
     }
     std::string get_name() {
         return _name;
+    }
+    void submission_info(int submission_id) {
+        submission_id = _submissions[submission_id];
+        std::string request = oj_to_submission;
+        replace(request, "{SUBMISSION}", std::to_string(submission_id));
+        write_in_file("temp.sh", request);
+        run_file("temp.sh");
+        oj_update_data();
+        std::string ans = read_from_file("temp.ans");
+        std::vector<std::string> subtask;
+        if (ans.find("progressbar_text_" + std::to_string(submission_id)) >= ans.size()) {
+            std::cout << "something went wrong\n";
+            return;
+        }
+        int pos = (int)ans.find("progressbar_text_" + std::to_string(submission_id)) + 56;
+        std::string verdict;
+        while (ans[pos] != '<') {
+            verdict += ans[pos];
+            pos++;
+        }
+        if (verdict == "Compilation error") {
+            std::cout << verdict << '\n';
+            return;
+        }
+        std::string score, time, memory;
+        pos = (int)ans.find("progressbar_text_" + std::to_string(submission_id)) + (int)("progressbar_text_" + std::to_string(submission_id)).size() + 33;
+        while (ans[pos] != ' ') {
+            score += ans[pos];
+            pos++;
+        }
+        pos = (int)ans.find("max_execution_time_" + std::to_string(submission_id)) + (int)("max_execution_time_" + std::to_string(submission_id)).size() + 2;
+        while (ans[pos] != '<') {
+            time += ans[pos];
+            pos++;
+        }
+        pos = (int)ans.find("max_memory_" + std::to_string(submission_id)) + (int)("max_memory_" + std::to_string(submission_id)).size() + 2;
+        while (ans[pos] != '<') {
+            memory += ans[pos];
+            pos++;
+        }
+        while (ans.find(".0</div>") < ans.size()) {
+            pos = (int)ans.find(".0</div>") - 1;
+            subtask.emplace_back();
+            while (ans[pos] != '>') {
+                subtask.back() += ans[pos];
+                pos--;
+            }
+            reverse(subtask.back().begin(), subtask.back().end());
+            ans.replace(ans.find(".0</div>"), 8, "used");
+        }
+        std::cout << "score: " << score << '\n' << "time: " << time << '\n' << "memory: " << memory << '\n' << "subtasks: " << '\n';
+        for (const auto& i : subtask) {
+            std::cout << i << '\n';
+        }
     }
     friend std::ifstream& operator >> (std::ifstream& fin, Problem& a);
 	friend std::ofstream& operator << (std::ofstream& fout, Problem& a);
