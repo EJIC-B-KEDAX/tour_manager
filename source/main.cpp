@@ -15,22 +15,22 @@ int main() {
 	while (true) {
 		std::string command;
 		std::cin >> command;
-		if (command == "exit") {
+		if (command == "exit" || command == ":e") {
 			break;
 		} else if (command == "save") {
             save_data("save/problems.lox", problems);
             save_data("save/upsolving.lox", upsolving);
             std::cout << "saved\n";
-        } else if (command == "add_problem_to_upsolving") {
+        } else if (command == "add_problem_to_upsolving" || command == ":a") {
             std::string type, link;
             int complexity;
             std::cin >> type >> link >> complexity;
             upsolving.emplace_back(type, link, complexity, upsolving.size());
             std::cout << "problem index " << upsolving.size() - 1 << '\n';
-        } else if (command == "show_statement") {
+        } else if (command == "show_statement" || command == ":sh") {
             std::string type_search, filename;
             std::cin >> type_search;
-            if (type_search == "index") {
+            if (type_search == "index" || type_search == "-i") {
                 int ind;
                 std::cin >> ind >> filename;
                 if (ind < upsolving.size()) {
@@ -39,7 +39,7 @@ int main() {
                 } else {
                     std::cout << "wrong index\n";
                 }
-            } else if (type_search == "name") {
+            } else if (type_search == "name" || type_search == "-n") {
                 std::string name, statement_name;
                 std::cin >> name >> filename;
                 int ind = -1;
@@ -59,7 +59,7 @@ int main() {
             } else {
                 std::cout << "invalid search type\n";
             }
-        } else if (command == "submit") {
+        } else if (command == "submit" || command == ":s") {
             int ind;
             std::string filename;
             std::cin >> ind >> filename;
@@ -80,7 +80,11 @@ int main() {
             std::getline(std::cin, com);
             std::system(com.c_str());
         } else {
-            std::cout << "invalid command " + command << '\n';
+            std::string com;
+            std::getline(std::cin, com);
+            com = command + com;
+            std::cout << "! " << com << '\n';
+            std::system(com.c_str());
         }
 	}
     save_data("save/problems.lox", problems);

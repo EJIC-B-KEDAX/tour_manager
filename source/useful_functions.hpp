@@ -72,4 +72,12 @@ std::string string_to_url(const std::string& s) {
 	return res;
 }
 
+void run_file(const std::string& filename) {
+#ifdef WINDOWS
+    std::system(filename.c_str());
+#else
+    std::system(("./" + filename).c_str());
+#endif
+}
+
 #endif

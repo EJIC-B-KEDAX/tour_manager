@@ -56,7 +56,7 @@ bool oj_sign_in() {
 	email = string_to_url(email);
 	password = string_to_url(password);
 	write_in_file("temp.sh", oj_start);
-	std::system("temp.sh");
+    run_file("temp.sh");
 	if (!oj_update_data()) {
 		std::cout << "sign in failed\n";
 		return false;
@@ -73,7 +73,7 @@ bool oj_sign_in() {
 	}
 	replace(request, "{LENGTH}", std::to_string(len));
 	write_in_file("temp.sh", request);
-	std::system("temp.sh");
+    run_file("temp.sh");
 	if (!oj_update_data()) {
 		std::cout << "sign in failed\n";
 		return false;
@@ -89,7 +89,7 @@ bool oj_sign_in() {
 
 void download_file(std::string link, std::string filename) {
     write_in_file("temp.sh", "curl " + link + " > " + filename);
-    std::system("temp.sh");
+    run_file("temp.sh");
 }
 
 #endif

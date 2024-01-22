@@ -33,7 +33,7 @@ public:
         request = oj_view_problem;
         replace(request, "{NAME}", _name);
         write_in_file("temp.sh", request);
-        std::system("temp.sh");
+        run_file("temp.sh");
         ans = read_from_file("temp.ans");
         if (ans.find("Your browser does not support embedded PDF files. Please download the <a href='") >= ans.size()) {
             std::cout << "something went wrong\n";
@@ -53,7 +53,7 @@ public:
         replace(request, "{SESSION}", oj_session);
         replace(request, "{NAME}", _name);
         write_in_file("temp.sh", request);
-        std::system("temp.sh");
+        run_file("temp.sh");
         if (!oj_update_data()) {
             return;
         }
@@ -69,7 +69,7 @@ public:
         }
         replace(request, "{LENGTH}", std::to_string(len));
         write_in_file("temp.sh", request);
-        std::system("temp.sh");
+        run_file("temp.sh");
         if (!oj_update_data()) {
             return;
         }
