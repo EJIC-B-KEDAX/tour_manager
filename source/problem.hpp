@@ -34,7 +34,6 @@ public:
         replace(request, "{NAME}", _name);
         write_in_file("temp.sh", request);
         run_file("temp.sh");
-        oj_update_data();
         ans = read_from_file("temp.ans");
         if (ans.find("Your browser does not support embedded PDF files. Please download the <a href='") >= ans.size()) {
             std::cout << "something went wrong\n";
@@ -100,7 +99,6 @@ public:
         replace(request, "{SUBMISSION}", std::to_string(submission_id));
         write_in_file("temp.sh", request);
         run_file("temp.sh");
-        oj_update_data();
         std::string ans = read_from_file("temp.ans");
         std::vector<std::string> subtask;
         if (ans.find("progressbar_text_" + std::to_string(submission_id)) >= ans.size()) {
