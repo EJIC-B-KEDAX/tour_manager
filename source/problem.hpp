@@ -94,7 +94,7 @@ public:
     std::string get_name() {
         return _name;
     }
-    void submission_info(int submission_id) {
+    bool submission_info(int submission_id) {
         submission_id = _submissions[submission_id];
         std::string request = oj_to_submission;
         replace(request, "{SUBMISSION}", std::to_string(submission_id));
@@ -105,7 +105,7 @@ public:
         std::vector<std::string> subtask;
         if (ans.find("progressbar_text_" + std::to_string(submission_id)) >= ans.size()) {
             std::cout << "something went wrong\n";
-            return;
+            return true;
         }
         int pos = (int)ans.find("progressbar_text_" + std::to_string(submission_id)) + 56;
         std::string verdict;
@@ -115,7 +115,11 @@ public:
         }
         if (verdict == "Compilation error") {
             std::cout << verdict << '\n';
-            return;
+            return true;
+        }
+        if (verdict[0] < '0' || verdict[0] > '9') {
+            std::cout << "testing\n";
+            return false;
         }
         std::string score, time, memory;
         pos = (int)ans.find("progressbar_text_" + std::to_string(submission_id)) + (int)("progressbar_text_" + std::to_string(submission_id)).size() + 33;
@@ -141,23 +145,35 @@ public:
                 pos--;
             }
             reverse(subtask.back().begin(), subtask.back().end());
+            subtask.back() += ".0";
             ans.replace(ans.find(".0</div>"), 8, "used");
         }
         std::cout << "score: " << score << '\n' << "time: " << time << '\n' << "memory: " << memory << '\n' << "subtasks: " << '\n';
         for (const auto& i : subtask) {
             std::cout << i << '\n';
         }
+        _score = std::max(_score, stoi(score));
+        return true;
+    }
+    int get_score() {
+        return _score;
+    }
+    int number_of_submissions() {
+        return (int)_submissions.size();
+    }
+    int get_complexity() {
+        return _complexity;
     }
     friend std::ifstream& operator >> (std::ifstream& fin, Problem& a);
 	friend std::ofstream& operator << (std::ofstream& fout, Problem& a);
 private:
 	std::string _name, _type;
-	int _complexity{}, _index{};
+	int _complexity{}, _index{}, _score{};
 	std::vector<int> _submissions;
 };
 
 std::ifstream& operator >> (std::ifstream& fin, Problem& a) {
-    fin >> a._name >>  a._type >> a._complexity >> a._index;
+    fin >> a._name >>  a._type >> a._complexity >> a._index >> a._score;
     int sz;
     fin >> sz;
     a._submissions.resize(sz);
@@ -168,7 +184,7 @@ std::ifstream& operator >> (std::ifstream& fin, Problem& a) {
 }
 
 std::ofstream& operator << (std::ofstream& fout, Problem& a) {
-    fout << a._name << " " << a._type << " " << a._complexity << " " << a._index << "\n" << a._submissions.size() << "\n";
+    fout << a._name << " " << a._type << " " << a._complexity << " " << a._index << ' ' << a._score << "\n" << a._submissions.size() << "\n";
     for (int i: a._submissions) {
         fout << i << " ";
     }

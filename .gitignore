@@ -2,7 +2,6 @@
 /.idea/
 /cmake-build-debug/
 CMakeLists.txt
-/save/*.lox
 *.pdf
 /*.cpp
 temp.ans
