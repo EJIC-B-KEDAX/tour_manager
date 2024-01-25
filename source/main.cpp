@@ -101,7 +101,9 @@ int main() {
                     int old_sz = tour[now_tour][ind].number_of_submissions();
                     tour[now_tour][ind].submit(read_from_file(filename));
                     if (old_sz != tour[now_tour][ind].number_of_submissions()) {
-                        tour[now_tour][ind].submission_info(tour[now_tour][ind].number_of_submissions() - 1);
+                        while (!tour[now_tour][ind].submission_info(tour[now_tour][ind].number_of_submissions() - 1)) {
+                            _sleep(5000);
+                        }
                     }
                 } else {
                     std::cout << "ok\n";
@@ -214,6 +216,17 @@ int main() {
                 } else {
                     shuffle(tour.back().begin(), tour.back().end(), mt);
                 }
+            } else if (opt == "-fc") {
+                int sz;
+                std::cin >> sz;
+                tour.emplace_back();
+                for (int i = 0; i < sz; i++) {
+                    std::string type, link;
+                    std::cin >> type >> link;
+                    tour.back().emplace_back(type, link, 1, (int)problems.size() - 1);
+                    problems.emplace_back(type, link, 1, (int)problems.size() - 1);
+                }
+                std::cout << "tour created, id = " << tour.size() - 1 << '\n';
             } else {
                 std::cout << "invalid option\n";
             }

@@ -200,7 +200,7 @@ private:
 };
 
 std::ifstream& operator >> (std::ifstream& fin, Problem& a) {
-    fin >> a._name >>  a._type >> a._complexity >> a._index >> a._score;
+    fin >> a._name >>  a._type >> a._complexity >> a._index >> a._score >> a._time_limit >> a._memory_limit;
     int sz;
     fin >> sz;
     a._submissions.resize(sz);
@@ -211,7 +211,7 @@ std::ifstream& operator >> (std::ifstream& fin, Problem& a) {
 }
 
 std::ofstream& operator << (std::ofstream& fout, Problem& a) {
-    fout << a._name << " " << a._type << " " << a._complexity << " " << a._index << ' ' << a._score << "\n" << a._submissions.size() << "\n";
+    fout << a._name << " " << a._type << " " << a._complexity << " " << a._index << ' ' << a._score << ' ' << a._time_limit << ' ' << a._memory_limit << "\n" << a._submissions.size() << "\n";
     for (int i: a._submissions) {
         fout << i << " ";
     }
