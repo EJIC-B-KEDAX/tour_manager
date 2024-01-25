@@ -156,14 +156,14 @@ int main() {
                     std::cout << "wrong problem\n";
                     continue;
                 }
-                std::cout << ind1 << ": score " << tour[now_tour][ind].get_score() << ", submissions " << tour[now_tour][ind].number_of_submissions() << '\n';
+                std::cout << ind1 << ": score " << tour[now_tour][ind].get_score() << ", time limit " << tour[now_tour][ind].get_time_limit() << " ms, memory limit " << tour[now_tour][ind].get_memory_limit() << " Mb, submissions " << tour[now_tour][ind].number_of_submissions() << '\n';
             } else {
                 ind = stoi(ind1);
                 if (ind >= upsolving.size()) {
                     std::cout << "wrong index\n";
                     continue;
                 }
-                std::cout << upsolving[ind].get_name() << ": score " << upsolving[ind].get_score() << ", submissions " << upsolving[ind].number_of_submissions() << '\n';
+                std::cout << upsolving[ind].get_name() << ": score " << upsolving[ind].get_score() << ", time limit " << upsolving[ind].get_time_limit() << " ms, memory limit " << upsolving[ind].get_memory_limit() << " Mb, submissions " << upsolving[ind].number_of_submissions() << '\n';
             }
         } else if (command == "sys") {
             std::string com;

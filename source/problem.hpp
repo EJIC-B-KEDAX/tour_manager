@@ -45,6 +45,29 @@ public:
             link_to_statement += ans[pos];
             pos++;
         }
+        if (ans.find(" ms") >= ans.size()) {
+            std::cout << "something went wrong\n";
+            return;
+        }
+        std::string time_limit, memory_limit;
+        pos = (int)ans.find(" ms") - 1;
+        while (ans[pos] != '>') {
+            time_limit += ans[pos];
+            pos--;
+        }
+        reverse(time_limit.begin(), time_limit.end());
+        if (ans.find(" MiB") >= ans.size()) {
+            std::cout << "something went wrong\n";
+            return;
+        }
+        pos = (int)ans.find(" MiB") - 1;
+        while (ans[pos] != '>') {
+            memory_limit += ans[pos];
+            pos--;
+        }
+        reverse(memory_limit.begin(), memory_limit.end());
+        _time_limit = stoi(time_limit);
+        _memory_limit = stoi(memory_limit);
         download_file(link_to_statement, statement_name());
     }
 	void submit(std::string code) {
@@ -162,11 +185,17 @@ public:
     int get_complexity() {
         return _complexity;
     }
+    int get_time_limit() {
+        return _time_limit;
+    }
+    int get_memory_limit() {
+        return _memory_limit;
+    }
     friend std::ifstream& operator >> (std::ifstream& fin, Problem& a);
 	friend std::ofstream& operator << (std::ofstream& fout, Problem& a);
 private:
 	std::string _name, _type;
-	int _complexity{}, _index{}, _score{};
+	int _complexity{}, _index{}, _score{}, _time_limit{}, _memory_limit{};
 	std::vector<int> _submissions;
 };
 
