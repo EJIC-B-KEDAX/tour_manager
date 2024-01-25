@@ -223,8 +223,7 @@ int main() {
                 for (int i = 0; i < sz; i++) {
                     std::string type, link;
                     std::cin >> type >> link;
-                    tour.back().emplace_back(type, link, 1, (int)problems.size() - 1);
-                    problems.emplace_back(type, link, 1, (int)problems.size() - 1);
+                    tour.back().emplace_back(type, link, 1, (int)problems.size() - 1 + i);
                 }
                 std::cout << "tour created, id = " << tour.size() - 1 << '\n';
             } else {
