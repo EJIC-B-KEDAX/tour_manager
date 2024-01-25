@@ -228,6 +228,7 @@ int main() {
             }
             now_tour = tour_id;
             start_time = clock();
+            have_time = time;
         } else if (command == "time" && now_tour != -1) {
             int tm = (clock() - start_time) / CLOCKS_PER_SEC;
             std::cout << tm / 3600 << ':' << (tm % 3600) / 60 << ':' << tm % 60 << '\n';
