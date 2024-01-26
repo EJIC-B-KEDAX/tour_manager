@@ -22,7 +22,7 @@
 
 `create_tour "opt" "size" "problems"` - создаёт тур с `"size"` задачами(`"problems"`), согласно опции `"opt"`:
   1. `"-r"` - random
-  2. `"-c` - custom complexities
+  2. `"-c"` - custom complexities
   3. `"-fc"` - full custom
 
 `start_tour "index" "time"` - начинает тур с номером `"index"` с продолжительностью `"time"` секунд
