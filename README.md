@@ -16,7 +16,7 @@
 
 `submit "index" "filename"` или `:s "index" "filename"` - отправить в задачу с индексом `"index"` файл `"filename"`
 
-`check_submission "index" "submission_id"` - выводит информацию о посылке с номером `"submission_id"` по задаче с номерном `"index"`
+`check_submission "index" "submission_id"` или `:c "index" "submission_id"` - выводит информацию о посылке с номером `"submission_id"` по задаче с номерном `"index"`
 
 `problem_info "index"` или `:i "index"` - выводит информацию о задаче с номером `"index"`
 
