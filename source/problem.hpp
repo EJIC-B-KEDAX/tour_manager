@@ -123,7 +123,7 @@ public:
         write_in_file("temp.sh", request);
         run_file("temp.sh");
         std::string ans = read_from_file("temp.ans");
-        std::vector<std::string> subtask;
+        std::vector<std::string> subtask, subtask_verdict;
         if (ans.find("progressbar_text_" + std::to_string(submission_id)) >= ans.size()) {
             std::cout << "something went wrong\n";
             return true;
@@ -158,8 +158,10 @@ public:
             memory += ans[pos];
             pos++;
         }
-        while (ans.find(".0</div>") < ans.size()) {
-            pos = (int)ans.find(".0</div>") - 1;
+        std::vector<int> subtask_position(1, 0);
+        while (ans.find(".0</div>", subtask_position.back()) < ans.size()) {
+            pos = (int)ans.find(".0</div>", subtask_position.back()) - 1;
+            subtask_position.push_back(pos + 9);
             subtask.emplace_back();
             while (ans[pos] != '>') {
                 subtask.back() += ans[pos];
@@ -167,11 +169,37 @@ public:
             }
             reverse(subtask.back().begin(), subtask.back().end());
             subtask.back() += ".0";
-            ans.replace(ans.find(".0</div>"), 8, "used");
+        }
+        subtask_position.push_back((int)ans.size());
+        subtask_position.erase(subtask_position.begin());
+        for (int i = 0; i < (int)subtask_position.size() - 1; i++) {
+            int begin = subtask_position[i], end = subtask_position[i + 1];
+            subtask_verdict.emplace_back();
+            if (ans.find("\"danger\"", begin) >= end) {
+                subtask_verdict.back() = "OK";
+                continue;
+            } else {
+                begin = (int)ans.find("\"danger\"", begin);
+                pos = (int)ans.find("<td>", begin) + 4;
+                std::string test_number;
+                while (ans[pos] != '<') {
+                    test_number += ans[pos];
+                    pos++;
+                }
+                if (ans.find("Output isn", begin) < end) {
+                    subtask_verdict.back() = "WA " + test_number;
+                } else if (ans.find("Execution timed out", begin) < end) {
+                    subtask_verdict.back() = "TL " + test_number;
+                } else if (ans.find("Runtime error", begin) < end) {
+                    subtask_verdict.back() = "RE " + test_number;
+                } else {
+                    subtask_verdict.back() = "??? " + test_number;
+                }
+            }
         }
         std::cout << "score: " << score << '\n' << "time: " << time << '\n' << "memory: " << memory << '\n' << "subtasks: " << '\n';
-        for (const auto& i : subtask) {
-            std::cout << i << '\n';
+        for (int i = 0; i < (int)subtask.size(); i++) {
+            std::cout << i + 1 << ". " << subtask[i] << " verdict: " << subtask_verdict[i] << '\n';
         }
         _score = std::max(_score, stoi(score));
         return true;
@@ -184,6 +212,9 @@ public:
     }
     int get_complexity() {
         return _complexity;
+    }
+    int get_index() {
+        return _index;
     }
     int get_time_limit() {
         return _time_limit;

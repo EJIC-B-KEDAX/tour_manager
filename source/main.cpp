@@ -11,11 +11,23 @@ int main() {
 	if (!oj_sign_in()) {
 		return 0;
 	}
+    int max_index = 0;
 	std::vector<Problem> problems, upsolving;
     std::vector<std::vector<Problem>> tour;
     load_data("save/problems.lox", problems);
     load_data("save/upsolving.lox", upsolving);
     load_data("save/tours.lox", tour);
+    for (auto& i : problems) {
+        max_index = std::max(max_index, i.get_index());
+    }
+    for (auto& i : upsolving) {
+        max_index = std::max(max_index, i.get_index());
+    }
+    for (auto& i : tour) {
+        for (auto& j : i) {
+            max_index = std::max(max_index, j.get_index());
+        }
+    }
     int start_time = 0, have_time = 0, now_tour = -1;
 	while (true) {
 		std::string command;
@@ -46,13 +58,14 @@ int main() {
             std::string type, link;
             int complexity;
             std::cin >> type >> link >> complexity;
-            upsolving.emplace_back(type, link, complexity, upsolving.size());
-            std::cout << "problem index " << upsolving.size() - 1 << '\n';
+            upsolving.emplace_back(type, link, complexity, max_index);
+            std::cout << "problem index " << max_index++ << '\n';
         } else if (command == "add_problem_to_base" || command == ":ab") {
             std::string type, link;
             int complexity;
             std::cin >> type >> link >> complexity;
-            problems.emplace_back(type, link, complexity, problems.size());
+            problems.emplace_back(type, link, complexity, max_index++);
+            std::cout << "ok\n";
         } else if (command == "search") {
             std::string type_search;
             std::cin >> type_search;
@@ -94,18 +107,18 @@ int main() {
                     std::cout << "wrong problem\n";
                     continue;
                 }
-                std::cout << "sure?\n";
+                std::cout << "sure?[y/n]\n";
                 std::string ans;
                 std::cin >> ans;
-                if (ans != "no") {
+                if (ans == "y") {
                     int old_sz = tour[now_tour][ind].number_of_submissions();
                     tour[now_tour][ind].submit(read_from_file(filename));
                     if (old_sz != tour[now_tour][ind].number_of_submissions()) {
                         while (!tour[now_tour][ind].submission_info(tour[now_tour][ind].number_of_submissions() - 1)) {
-                            _sleep(5000);
+                            std::this_thread::sleep_for(std::chrono::milliseconds(5000));
                         }
                     }
-                } else {
+                } else if (ans == "n") {
                     std::cout << "ok\n";
                 }
             } else {
@@ -122,7 +135,7 @@ int main() {
                     upsolving[ind].submit(read_from_file(filename));
                     if (old_sz != upsolving[ind].number_of_submissions()) {
                         while (!upsolving[ind].submission_info(upsolving[ind].number_of_submissions() - 1)) {
-                            _sleep(5000);
+                            std::this_thread::sleep_for(std::chrono::milliseconds(5000));
                         }
                     }
                 } else {
@@ -223,7 +236,7 @@ int main() {
                 for (int i = 0; i < sz; i++) {
                     std::string type, link;
                     std::cin >> type >> link;
-                    tour.back().emplace_back(type, link, 1, (int)problems.size() - 1 + i);
+                    tour.back().emplace_back(type, link, 1, max_index++);
                 }
                 std::cout << "tour created, id = " << tour.size() - 1 << '\n';
             } else {

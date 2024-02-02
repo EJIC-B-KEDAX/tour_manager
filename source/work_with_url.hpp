@@ -24,7 +24,7 @@ std::string oj_view_problem = "curl -i -s -k -X $'GET' https://oj.uz/problem/vie
 
 bool oj_update_data() {
 	std::string ans = read_from_file("temp.ans");
-	if (ans.find("302 Found") >= ans.size() && ans.find("200 OK") >= ans.size()) {
+	if (ans.find("302") >= 20 && ans.find("200") >= 20) {
 		std::cout << "something went wrong\n";
 		return false;
 	}
@@ -36,7 +36,7 @@ bool oj_update_data() {
 			pos++;
 		}
 	}
-	if (ans.find(R"(name="csrf_token" type="hidden" value=")") < ans.size()) {
+	if (ans.find("name=\"csrf_token\" type=\"hidden\" value=") < ans.size()) {
 		int pos = (int)ans.find(R"(name="csrf_token" type="hidden" value=")") + 39;
 		oj_csrf_token.clear();
 		while (ans[pos] != '\"') {
@@ -79,7 +79,7 @@ bool oj_sign_in() {
 		return false;
 	}
 	std::string ans = read_from_file("temp.ans");
-	if (ans.find("302 Found") >= ans.size()) {
+	if (ans.find("302") >= 20) {
 		std::cout << "Email or password incorrect\n";
 		return false;
 	}
