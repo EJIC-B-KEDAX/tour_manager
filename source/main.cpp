@@ -28,6 +28,7 @@ int main() {
             max_index = std::max(max_index, j.get_index());
         }
     }
+    max_index++;
     int start_time = 0, have_time = 0, now_tour = -1;
 	while (true) {
 		std::string command;
