@@ -197,7 +197,7 @@ int main() {
                 }
                 tour.emplace_back();
                 for (int i = 0; i < sz; i++) {
-                    int ind = (int)mt() % (int)problems.size();
+                    int ind = mt() % (int)problems.size();
                     tour.back().push_back(problems[ind]);
                     problems.erase(problems.begin() + ind);
                 }
